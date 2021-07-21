@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Selenium.Linkedin
+﻿namespace Selenium.Linkedin
 {
     public static class User
     {
-        public static string Email { get; set; } = "fernando.guerra@corujasdev.com.br";
-        public static string Password { get; set; } = "ligialinkedin12";
+        public static string Email { get; set; } = "";
+        public static string Password { get; set; } = "";
     }
 }

@@ -12,7 +12,7 @@ namespace Selenium.Linkedin
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Selenium Iniciado");
+            Console.WriteLine("Selenium start");
 
             m_driver = new FirefoxDriver();
             m_driver.Url = "https://www.linkedin.com";
@@ -21,8 +21,6 @@ namespace Selenium.Linkedin
             Login();
 
             AcceptInviations();
-
-            //RequestSkills();
         }
 
         private static void Login()
@@ -49,12 +47,10 @@ namespace Selenium.Linkedin
             ICollection<IWebElement> inviations = m_driver.FindElements(By.XPath(".//*[@class='invitation-card artdeco-list__item ember-view']"));
 
 
-            foreach (var inviation in inviations)
-            {
+            foreach (var inviation in inviations){
 
                 //Check if the invitation message is customized
                 if (ElementExistItem(inviation, ".invitation-card__custom-message-container")) continue;
-
 
                 if (!ElementExistItem(inviation, ".invitation-card__title")) continue;
 
@@ -80,91 +76,14 @@ namespace Selenium.Linkedin
             }
         }
 
-        private static void RequestSkills()
-        {
-            ICollection<IWebElement> friends;
-            m_driver.Navigate().GoToUrl("https://www.linkedin.com/mynetwork/invite-connect/connections/");
-            Thread.Sleep(5000);
-
-            string countConections = m_driver.FindElement(By.CssSelector(".mn-connections__header")).Text;
-            Console.WriteLine($"Quantidade Contatos: {countConections}");
-
-            IJavaScriptExecutor js = m_driver as IJavaScriptExecutor;
-            int countScroll = 0, countScrollPixel = 2000, countFriends =0;
-
-            do
-            {
-                friends = m_driver.FindElements(By.ClassName("mn-connection-card"));
-                Console.WriteLine(friends.Count);
-                Thread.Sleep(1000);
-                js.ExecuteScript("window.scrollBy(0,2000)");
-                Thread.Sleep(1000);
-                js.ExecuteScript("window.scrollBy(0,-50)");              
-
-                if(countFriends != friends.Count){
-                    countScroll = 0;
-                    countFriends = friends.Count;
-                }
-                else{
-                    countScroll += 1;
-                }
-
-                countScrollPixel += 2000;
-
-                if (countScroll > 5)
-                    break;
-
-            } while (true);
-
-            Thread.Sleep(1000);
-            js.ExecuteScript($"window.scrollBy(0,{-1 * countScrollPixel})");
-
-            foreach (var item in friends)
-            {
-                //Verifica se 
-                if (!ElementExistItem(item, ".message-anywhere-button")) continue;
-
-                //Pega nome usuário
-                var name = item.FindElement(By.CssSelector(".mn-connection-card__name")).Text;
-                Console.WriteLine($"Nome: {name}");
-
-                //Abre chat usuário
-                item.FindElement(By.CssSelector(".message-anywhere-button")).Click();
-                Thread.Sleep(2000);
-
-                //Preenche formúlário mensagem
-
-                if (!ElementExistBody(m_driver, ".msg-s-event-listitem__body")) {
-                    //SendMessage(Messages.Presentation(name));
-                    m_driver.FindElement(By.ClassName("js-msg-close")).Click();
-                    continue;
-                }
-
-
-                IWebElement chatMessageAbility = m_driver.FindElement(By.CssSelector(".msg-s-event-listitem__body"));
-
-                if (!chatMessageAbility.Text.Contains("5 principais habilidades em seu perfil"))
-                {
-                    //SendMessage(Messages.Skills(name));
-                }
-                //Fecha chat
-                m_driver.FindElement(By.ClassName("js-msg-close")).Click();
-
-                js.ExecuteScript("window.scrollBy(0,80)");
-            }
-        }
-        
-    
         private static bool ElementExistItem(IWebElement item, string name)
         {
 
-            try
-            {
+            try{
                 IWebElement exist =  item.FindElement(By.CssSelector(name));
                 return true;
             }
-            catch (Exception)
-            {
+            catch (Exception){
                 return false;
             }
         }
@@ -172,13 +91,11 @@ namespace Selenium.Linkedin
         private static bool ElementExistBody(IWebDriver driver, string name)
         {
 
-            try
-            {
+            try{
                 IWebElement exist = driver.FindElement(By.CssSelector(name));
                 return true;
             }
-            catch (Exception)
-            {
+            catch (Exception){
                 return false;
             }
         }

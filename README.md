@@ -1,2 +1,8 @@
 # webcrawler_linkedin
-Aplicação console que visa automatizar processos no Linkedin como, aceitar convites, pedido de recomendações.
+Console application using Selenium for automatizer processos in Linkedin, accept invites.
+
+# Settings
+Include email and password in class User.cs
+
+# About
+Visit http://linktr.ee/corujasdev
